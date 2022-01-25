@@ -160,9 +160,7 @@ class LocalizationGroup:
         choice_type = click.IntRange(1, index + 1)
         choice_suffix = click.style(": ", fg="bright_red")
 
-        chosen_entry = click.prompt(choice_style,
-                                    type=choice_type,
-                                    prompt_suffix=choice_suffix)
+        chosen_entry = 2 #Change Accordingly
 
         click.echo()
 
