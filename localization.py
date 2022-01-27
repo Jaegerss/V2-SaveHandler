@@ -152,8 +152,6 @@ class LocalizationGroup:
 
             click.echo(f"{entry_style} {file_style}{local_style}\n")
 
-        self.prompt_files(assoc)
-
         choice_style = click.style("Which entry should be chosen?",
                                    fg="bright_red")
 
@@ -167,23 +165,6 @@ class LocalizationGroup:
         assoc_removed = assoc[:chosen_entry - 1] + assoc[chosen_entry:]
         self.deduplicate(key, assoc[chosen_entry - 1], assoc_removed)
         return assoc_removed
-
-    def prompt_files(self: LG, assoc: AssocList) -> None:
-        """Display a prompt to open the provided files."""
-
-        if not self.prompt_file:
-            return
-
-        file_names = set(map(lambda tup: tup[0], assoc))
-
-        file_names_repr = ", ".join(file_names)
-        ending = "this file" if len(file_names) == 1 else "these files"
-
-        end_style = click.style(f"Do you want to open {ending}?",
-                                fg="bright_green")
-        if click.confirm(end_style):
-            for file_name in file_names:
-                click.launch(file_name)
 
     def deduplicate(self: LG, key: str, chosen: Assoc, assoc_removed: AssocList) -> None:
         """Drop duplicated entries and emplace the chosen entry
