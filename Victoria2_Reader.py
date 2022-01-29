@@ -274,6 +274,6 @@ if __name__ == "__main__":
 
     with open(output_file_name + ".csv", "w", newline="") as f:
         writer = csv.writer(f)
+        f.write("SEP=,\n")
         writer.writerow(year_list)
         writer.writerows(country_list)
-
