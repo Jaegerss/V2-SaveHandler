@@ -5,17 +5,12 @@ import csv
 countries_txt = r"C:\Games\Victoria GIT\mod\PDX ARG MP\common\countries.txt"
 saves_folder = r"C:\Users\Jaeger\Documents\Paradox Interactive\Victoria II\PDX ARG MP\save games"
 
-#NOTE: Files MUST be named in a numerical date order, so 1.v2 2.v2 3.v2, etc. Otherwise this tool will NOT work
+#NOTE: Files MUST be named in a numerical date order, so 1.v2 2.v2 3.v2, etc. Otherwise this tool will NOT work 
 
 #Data Configuration
 saves_per_year = 1
 number_of_saves = 17
 first_year = 1836
-
-#Only one of these can be True
-Population_Reader_Bool = True
-GDP_Reader_Bool = False
-Culture_Religion_Reader_Bool = False
 
 include_vassal_in_overlord = False #Incoportate Vassals into the Overlod data
 divide_all_results_by = 1 
@@ -26,7 +21,6 @@ Use_Only_These_Tags = ["USA","FRA","ENG","RUS","AUS","KUK","SAR","ITA","TKG","JA
 
 year_list = ["blah", "blah"]
 country_list = [["XXX", "Indigenous People"]]
-
 
 def read_in_countries():
     for line in open(countries_txt):
@@ -50,7 +44,6 @@ def read_in_countries():
         for i in range(len(country_list)):
             for j in range(saves_per_year):
                 country_list[i].append(0)
-
 
 def Population_Reader():
     for l in range(1, 1 + (saves_per_year * number_of_saves)):
@@ -116,7 +109,6 @@ def Population_Reader():
 
                     master_tag = None
                     vassal_tag = None
-
 
 def GDP_Reader():
     for l in range(1, 1 + (saves_per_year * number_of_saves)):
@@ -205,7 +197,6 @@ def GDP_Reader():
                     master_tag = None
                     vassal_tag = None
 
-
 def Culture_Religion():
     for l in range(1, 1 + (saves_per_year * number_of_saves)):
         print(str(int(100 * l / (saves_per_year * number_of_saves))) + "%")
@@ -251,19 +242,11 @@ def Culture_Religion():
                         pop_size = int(line[7:-1]) * 4 / divide_all_results_by
                         size_flag = True
 
-
 if __name__ == "__main__":
     read_in_countries()
 
-    if Population_Reader_Bool:
-        Population_Reader()
-        year_list = ["Code", "Name"]
-    if GDP_Reader_Bool:
-        GDP_Reader()
-        year_list = ["Code", "Name"]
-    if Culture_Religion_Reader_Bool:
-        Culture_Religion()
-        year_list = ["Culture"]
+    Population_Reader()
+    year_list = ["Code", "Name"]
 
     for j in range(number_of_saves):
         for k in range(saves_per_year):
@@ -272,7 +255,45 @@ if __name__ == "__main__":
     if remove_0_tags:
         country_list = [x for x in country_list if max(x[2:]) > 0]
 
-    with open(output_file_name + ".csv", "w", newline="") as f:
+    with open("Population" + ".csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        f.write("SEP=,\n")
+        writer.writerow(year_list)
+        writer.writerows(country_list)
+
+    country_list = [["XXX", "Indigenous People"]]
+    read_in_countries()
+
+    GDP_Reader()
+    year_list = ["Code", "Name"]
+
+    for j in range(number_of_saves):
+        for k in range(saves_per_year):
+            year_list.append(first_year + j)
+
+    if remove_0_tags:
+        country_list = [x for x in country_list if max(x[2:]) > 0]
+
+    with open("GDP" + ".csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        f.write("SEP=,\n")
+        writer.writerow(year_list)
+        writer.writerows(country_list)
+
+    country_list = [["XXX", "Indigenous People"]]
+    read_in_countries()
+
+    Culture_Religion()
+    year_list = ["Culture"]
+
+    for j in range(number_of_saves):
+        for k in range(saves_per_year):
+            year_list.append(first_year + j)
+
+    if remove_0_tags:
+        country_list = [x for x in country_list if max(x[2:]) > 0]
+
+    with open("Culture and Religion" + ".csv", "w", newline="") as f:
         writer = csv.writer(f)
         f.write("SEP=,\n")
         writer.writerow(year_list)
